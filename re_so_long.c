@@ -6,7 +6,7 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:03:42 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/02 21:22:12 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:29:42 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "re_so_long.h"
 
 void process_keypress(int keycode, int *new_x, int *new_y);
+void *get_tile_image(t_game *game, char tile);
 
 void init_info_map(t_info_map *info)
 {
@@ -35,6 +36,7 @@ int close_window(t_game *game)
     return (0);
 }
 
+
 void draw_map(t_game *game)
 {
     int x, y;
@@ -44,32 +46,38 @@ void draw_map(t_game *game)
         for (x = 0; x < game->info.width; x++)
         {
             printf("Dibujando tile en (%d, %d): %c\n", x, y, game->info.map[y][x]);
-            if (game->info.map[y][x] == '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_wall, x * TILE_SIZE, y * TILE_SIZE);
-            else if (game->info.map[y][x] == 'P')
-            {
-                if (game->img_player == NULL)
-                {
-                    fprintf(stderr, "Error: Imagen del jugador es nula\n");
-                    exit(EXIT_FAILURE);
-                }
-                printf("Dibujando jugador\n");
-                mlx_put_image_to_window(game->mlx, game->win, game->img_player, x * TILE_SIZE, y * TILE_SIZE);
-            }
-            else if (game->info.map[y][x] == 'C')
-            {
-                if (game->img_collectible == NULL)
-                {
-                    fprintf(stderr, "Error: Imagen del coleccionable es nula\n");
-                    exit(EXIT_FAILURE);
-                }
-                printf("Dibujando coleccionable\n");
-                mlx_put_image_to_window(game->mlx, game->win, game->img_collectible, x * TILE_SIZE, y * TILE_SIZE);
-            }
-            else
-                mlx_put_image_to_window(game->mlx, game->win, game->img_empty, x * TILE_SIZE, y * TILE_SIZE);
+            void *img = get_tile_image(game, game->info.map[y][x]);
+            mlx_put_image_to_window(game->mlx, game->win, img, x * TILE_SIZE, y * TILE_SIZE);
         }
     }
+}
+
+void *get_tile_image(t_game *game, char tile)
+{
+    if (tile == '1')
+        return game->img_wall;
+    else if (tile == 'P')
+    {
+        if (game->img_player == NULL)
+        {
+            fprintf(stderr, "Error: Imagen del jugador es nula\n");
+            exit(EXIT_FAILURE);
+        }
+        printf("Dibujando jugador\n");
+        return game->img_player;
+    }
+    else if (tile == 'C')
+    {
+        if (game->img_collectible == NULL)
+        {
+            fprintf(stderr, "Error: Imagen del coleccionable es nula\n");
+            exit(EXIT_FAILURE);
+        }
+        printf("Dibujando coleccionable\n");
+        return game->img_collectible;
+    }
+    else
+        return game->img_empty;
 }
 
 void draw_tile(t_game *game, int x, int y, char tile)
