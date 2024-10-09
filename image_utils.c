@@ -6,7 +6,7 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 17:38:16 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/02 19:43:52 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:47:57 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ void load_images(t_game *game)
     game->img_wall = load_image(game->mlx, "images/wall.xpm", &img_width, &img_height);
     game->img_empty = load_image(game->mlx, "images/empty.xpm", &img_width, &img_height);
     game->img_player = load_image(game->mlx, "images/player1.xpm", &img_width, &img_height);
+    game->img_playerleft = load_image(game->mlx, "images/player1left.xpm", &img_width, &img_height);
     game->img_collectible = load_image(game->mlx, "images/collectible.xpm", &img_width, &img_height);
     game->img_exit = load_image(game->mlx, "images/exit.xpm", &img_width, &img_height);
+
+    game->img_player_original = game->img_player; // Asignar la imagen original del jugador
 
     verify_image_size(img_width, img_height);
 

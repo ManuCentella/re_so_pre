@@ -6,7 +6,7 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:16:11 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/02 21:24:54 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:32:56 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,14 @@ typedef struct s_game
     void *img_exit;
     void *img_empty;
     void *img_player;
+    void *img_playerleft;
+    void *img_player_original; // Añadir esta línea para la imagen original del jugador
 } t_game;
+
+typedef struct {
+    int x;
+    int y;
+} Point;
 
 void init_info_map(t_info_map *info);
 void free_info_map(t_info_map *info);
@@ -66,5 +73,7 @@ void handle_collectible(t_game *game, int new_x, int new_y);
 void handle_exit(t_game *game, int new_x, int new_y);
 void move_player(t_game *game, int new_x, int new_y);
 int validate_map(t_info_map *info);
+void update_position(int keycode, int *new_x, int *new_y, t_game *game);
+int is_valid_move(int new_x, int new_y, t_game *game);
 
 #endif
