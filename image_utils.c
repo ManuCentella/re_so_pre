@@ -6,22 +6,13 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 17:38:16 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/09 12:47:57 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/10 20:42:38 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/inc/get_next_line.h"
 #include "re_so_long.h"
 
-void *load_image(void *mlx, char *file_path, int *width, int *height)
-{
-    void *img = mlx_xpm_file_to_image(mlx, file_path, width, height);
-    if (!img) {
-        fprintf(stderr, "Error al cargar %s\n", file_path);
-        exit(EXIT_FAILURE);
-    }
-    return img;
-}
 
 void verify_image_size(int width, int height)
 {

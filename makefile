@@ -6,7 +6,7 @@
 #    By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 13:07:22 by mcentell          #+#    #+#              #
-#    Updated: 2024/10/09 16:32:22 by mcentell         ###   ########.fr        #
+#    Updated: 2024/10/10 21:24:28 by mcentell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,10 @@ NAME = so_long
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I. -I$(LIBFT_DIR)/inc -I$(MLX_DIR) -fsanitize=address,leak
+CFLAGS = -Wall -Wextra -Werror -I. -I$(LIBFT_DIR)/inc -I$(MLX_DIR)
 
 # Especificar los archivos fuente y los archivos objeto
-SRCS = re_so_long.c re_so_long_utils.c image_utils.c
+SRCS = re_so_long.c re_so_long_utils.c image_utils.c utils_map.c graphics.c init_game.c game.c
 LIBFT_DIR = libft
 MLX_DIR = minilibx-linux
 OBJ_DIR = obj
