@@ -6,7 +6,7 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:16:11 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/10 21:03:57 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:02:34 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ typedef struct s_game
     void        *img_empty;
     void        *img_player;
     void        *img_playerleft;
-    void        *img_player_original; // Añadir esta línea para la imagen original del jugador
+    void        *img_player_original;
+    void        *img_exit_open; // Agregar este miembro
 }               t_game;
 
 typedef struct

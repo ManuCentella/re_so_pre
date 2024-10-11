@@ -6,7 +6,7 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:45:45 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/10 19:44:14 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:30:54 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,6 @@
 
 int	open_file(const char *filename); // Declaración de la función
 
-int	validate_map(t_info_map *info)
-{
-	int	player_count;
-	int	exit_count;
-	int	collectible_count;
-
-	player_count = 0;
-	exit_count = 0;
-	collectible_count = 0;
-	if (is_rectangular(info) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (is_surrounded_by_walls(info) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (count_map_elements(info, &player_count, &exit_count,
-			&collectible_count) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (has_valid_elements(player_count, exit_count,
-			collectible_count) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	// Verificar que haya un camino válido desde el jugador hasta la salida y todos los coleccionables
-	if (!is_valid_path(info, info->player_x, info->player_y))
-	{
-		fprintf(stderr,
-			"Error: No hay un camino válido desde el jugador hasta la salida o todos los coleccionables\n");
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
 
 void	free_info_map(t_info_map *info)
 {
