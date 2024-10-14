@@ -6,15 +6,12 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:45:45 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/11 16:30:54 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:25:57 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/inc/get_next_line.h"
 #include "re_so_long.h"
-
-int	open_file(const char *filename); // Declaración de la función
-
 
 void	free_info_map(t_info_map *info)
 {
@@ -130,32 +127,52 @@ void	count_collectibles_and_store_coordinates(t_info_map *info, int i)
 
 int	read_map(const char *filename, t_info_map *info)
 {
-	int fd = open_file(filename);
-	if (fd == -1)
-		return (EXIT_FAILURE);
+    int	fd;
 
-	info->map = malloc(info->height * sizeof(char *));
-	if (!info->map)
-	{
-		fprintf(stderr, "Error: No se pudo asignar memoria para el mapa\n");
-		close(fd);
-		return (EXIT_FAILURE);
-	}
+    fd = open_file(filename);
+    if (fd == -1)
+        return (EXIT_FAILURE);
 
-	info->num_collectibles = 0; // Inicializar el conteo de coleccionables a 0
+    if (allocate_map_memory(info) == EXIT_FAILURE)
+    {
+        close(fd);
+        return (EXIT_FAILURE);
+    }
 
-	int i = 0;
-	while (i < info->height)
-	{
-		if (read_and_validate_line(fd, info, i) == EXIT_FAILURE)
-		{
-			free_info_map(info);
-			close(fd);
-			return (EXIT_FAILURE);
-		}
-		count_collectibles_and_store_coordinates(info, i);
-		i++;
-	}
-	close(fd);
-	return (EXIT_SUCCESS);
+    if (read_map_lines(fd, info) == EXIT_FAILURE)
+    {
+        free_info_map(info);
+        close(fd);
+        return (EXIT_FAILURE);
+    }
+
+    close(fd);
+    return (EXIT_SUCCESS);
+}
+
+int	allocate_map_memory(t_info_map *info)
+{
+    info->map = malloc(info->height * sizeof(char *));
+    if (!info->map)
+    {
+        fprintf(stderr, "Error: No se pudo asignar memoria para el mapa\n");
+        return (EXIT_FAILURE);
+    }
+    info->num_collectibles = 0; // Inicializar el conteo de coleccionables a 0
+    return (EXIT_SUCCESS);
+}
+
+int	read_map_lines(int fd, t_info_map *info)
+{
+    int	i;
+
+    i = 0;
+    while (i < info->height)
+    {
+        if (read_and_validate_line(fd, info, i) == EXIT_FAILURE)
+            return (EXIT_FAILURE);
+        count_collectibles_and_store_coordinates(info, i);
+        i++;
+    }
+    return (EXIT_SUCCESS);
 }

@@ -6,92 +6,106 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 17:52:39 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/11 16:18:30 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:59:53 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/inc/get_next_line.h"
 #include "re_so_long.h"
 
-// Función para dibujar el mapa completo en la ventana
-void draw_map(t_game *game) {
-    void *img;
-    int x, y;
+void	*load_image(void *mlx, const char *file_path, int *width, int *height)
+{
+	void	*img;
 
-    // Recorre cada celda del mapa y dibuja la imagen correspondiente
-    for (y = 0; y < game->info.height; y++) {
-        for (x = 0; x < game->info.width; x++) {
-            img = get_tile_image(game, game->info.map[y][x]);
-            mlx_put_image_to_window(game->mlx, game->win, img, x * TILE_SIZE, y * TILE_SIZE);
-        }
-    }
+	img = mlx_xpm_file_to_image(mlx, (char *)file_path, width, height);
+	if (!img)
+	{
+		fprintf(stderr, "Error al cargar %s\n", file_path);
+		exit(EXIT_FAILURE);
+	}
+	return (img);
 }
 
-// Función para obtener la imagen correspondiente a un tipo de celda
-void *get_tile_image(t_game *game, char tile) {
-    if (tile == '1')
-        return game->img_wall;
-    else if (tile == 'P') {
-        if (game->img_player == NULL) {
-            fprintf(stderr, "Error: Imagen del jugador es nula\n");
-            exit(EXIT_FAILURE);
-        }
-        printf("Dibujando jugador\n");
-        return game->img_player;
-    } else if (tile == 'C') {
-        if (game->img_collectible == NULL) {
-            fprintf(stderr, "Error: Imagen del coleccionable es nula\n");
-            exit(EXIT_FAILURE);
-        }
-        printf("Dibujando coleccionable\n");
-        return game->img_collectible;
-    } else
-        return game->img_empty;
+void	process_keypress(int keycode, int *new_x, int *new_y)
+{
+	if (keycode == 119)
+		(*new_y)--;
+	else if (keycode == 115)
+		(*new_y)++;
+	else if (keycode == 97)
+		(*new_x)--;
+	else if (keycode == 100)
+		(*new_x)++;
 }
 
-// Función para dibujar una celda específica en la ventana
-void draw_tile(t_game *game, int x, int y, char tile) {
-    void *img;
+void	draw_map(t_game *game)
+{
+	int	x;
+	int	y;
 
-    if (tile == '0')
-        img = game->img_empty;
-    else if (tile == 'P')
-        img = game->img_player;
-    else if (tile == '1')
-        img = game->img_wall;
-    else if (tile == 'C')
-        img = game->img_collectible;
-    else if (tile == 'E')
-        img = game->img_exit;
-    else
-        img = game->img_empty;
-
-    // Verifica que la imagen no sea nula antes de dibujarla
-    if (img) {
-        mlx_put_image_to_window(game->mlx, game->win, img, x * TILE_SIZE, y * TILE_SIZE);
-    } else {
-        fprintf(stderr, "Error: Imagen nula en draw_tile\n");
-    }
+	y = 0;
+	while (y < game->info.height)
+	{
+		x = 0;
+		while (x < game->info.width)
+		{
+			draw_tile(game, x, y, game->info.map[y][x]);
+			x++;
+		}
+		y++;
+	}
 }
 
-// Función para cargar una imagen desde un archivo
-void *load_image(void *mlx, const char *file_path, int *width, int *height) {
-    void *img = mlx_xpm_file_to_image(mlx, (char *)file_path, width, height);
-    if (!img) {
-        fprintf(stderr, "Error al cargar %s\n", file_path);
-        exit(EXIT_FAILURE);
-    }
-    return img;
+void	draw_tile(t_game *game, int x, int y, char tile)
+{
+	void	*img;
+
+	if (tile == '0')
+		img = game->img_empty;
+	else if (tile == 'P')
+		img = game->img_player;
+	else if (tile == '1')
+		img = game->img_wall;
+	else if (tile == 'C')
+		img = game->img_collectible;
+	else if (tile == 'E')
+	{
+		if (game->info.num_collectibles == 0)
+			img = game->img_exit;
+		else
+			img = game->img_empty;
+	}
+	else
+		img = game->img_empty;
+	put_image_to_window(game, img, x, y);
 }
 
-// Función para procesar la entrada del teclado y actualizar la posición del jugador
-void process_keypress(int keycode, int *new_x, int *new_y) {
-    if (keycode == 119) // W key
-        (*new_y)--;
-    else if (keycode == 115) // S key
-        (*new_y)++;
-    else if (keycode == 97) // A key
-        (*new_x)--;
-    else if (keycode == 100) // D key
-        (*new_x)++;
+int	process_tile(char tile, int *player_count, int *exit_count,
+		int *collectible_count)
+{
+	if (tile == 'P')
+		(*player_count)++;
+	else if (tile == 'E')
+		(*exit_count)++;
+	else if (tile == 'C')
+		(*collectible_count)++;
+	else if (tile != '0' && tile != '1')
+	{
+		fprintf(stderr, "Error: Caracter inválido en el mapa: %c\n", tile);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+void	put_image_to_window(t_game *game, void *img, int x, int y)
+{
+	if (img)
+	{
+		mlx_put_image_to_window(game->mlx, game->win, img, x * TILE_SIZE, y
+			* TILE_SIZE);
+	}
+	else
+	{
+		fprintf(stderr, "Error: Imagen nula en draw_tile\n");
+		exit(EXIT_FAILURE);
+	}
 }

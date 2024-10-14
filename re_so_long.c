@@ -6,73 +6,12 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:03:42 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/11 16:15:56 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/14 16:05:06 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/inc/get_next_line.h"
-#include "re_so_long.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-// re_so_long.c
-
 #include "re_so_long.h"
 
-// Función de relleno por inundación para verificar caminos válidos en el mapa
-void flood_fill(t_info_map *info, int x, int y, bool **visited) {
-    if (x < 0 || x >= info->width || y < 0 || y >= info->height || visited[y][x] || info->map[y][x] == '1')
-        return;
-
-    visited[y][x] = true;
-
-    flood_fill(info, x + 1, y, visited);
-    flood_fill(info, x - 1, y, visited);
-    flood_fill(info, x, y + 1, visited);
-    flood_fill(info, x, y - 1, visited);
-}
-
-// Función para verificar si hay un camino válido desde la posición inicial hasta todos los coleccionables y la salida
-int is_valid_path(t_info_map *info, int start_x, int start_y) {
-    bool **visited = malloc(info->height * sizeof(bool *));
-    for (int i = 0; i < info->height; i++) {
-        visited[i] = malloc(info->width * sizeof(bool));
-        for (int j = 0; j < info->width; j++)
-            visited[i][j] = false;
-    }
-
-    flood_fill(info, start_x, start_y, visited);
-
-    for (int i = 0; i < info->height; i++) {
-        for (int j = 0; j < info->width; j++) {
-            if ((info->map[i][j] == 'E' || info->map[i][j] == 'C') && !visited[i][j]) {
-                for (int k = 0; k < info->height; k++)
-                    free(visited[k]);
-                free(visited);
-                return 0; // No se encontró un camino válido
-            }
-        }
-    }
-
-    for (int i = 0; i < info->height; i++)
-        free(visited[i]);
-    free(visited);
-
-    return 1; // Camino válido encontrado
-}
-
-// Función para mover al jugador a una nueva posición
-void move_player(t_game *game, int new_x, int new_y) {
-    static int move_count = 0; // Contador de movimientos
-    move_count++;
-    printf("Número de movimientos: %d\n", move_count);
-    handle_collectible(game, new_x, new_y);
-    handle_exit(game, new_x, new_y);
-    update_player_position(game, new_x, new_y);
-}
-
-// Función para establecer la posición inicial del jugador en el mapa
 void set_initial_player_position(t_info_map *info) {
     int y = 0;
     while (y < info->height) {
@@ -87,6 +26,16 @@ void set_initial_player_position(t_info_map *info) {
         }
         y++;
     }
+}
+
+// Función para mover al jugador a una nueva posición
+void move_player(t_game *game, int new_x, int new_y) {
+    static int move_count = 0; // Contador de movimientos
+    move_count++;
+    printf("Número de movimientos: %d\n", move_count);
+    handle_collectible(game, new_x, new_y);
+    handle_exit(game, new_x, new_y);
+    update_player_position(game, new_x, new_y);
 }
 
 // Función para inicializar el juego
