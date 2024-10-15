@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   re_so_long.h                                       :+:      :+:    :+:   */
+/*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:16:11 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/14 19:27:10 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:36:19 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RE_SO_LONG_H
-# define RE_SO_LONG_H
+#ifndef SO_LONG_H
+# define SO_LONG_H
 
+# include "libft/inc/ft_printf.h"
 # include "libft/inc/get_next_line.h"
 # include "minilibx-linux/mlx.h"
 # include <fcntl.h>
@@ -66,10 +67,6 @@ int				open_file(const char *filename);
 int				read_map_lines(int fd, t_info_map *info);
 int				allocate_map_memory(t_info_map *info);
 
-
-
-
-
 // Funciones de manejo del mapa
 void			free_info_map(t_info_map *info);
 int				get_map_dimensions(const char *filename, t_info_map *info);
@@ -80,6 +77,9 @@ void			load_map(const char *filename, t_info_map *info);
 void			validate_map_and_set_position(t_info_map *info);
 int				check_vertical_walls(t_info_map *info);
 int				check_horizontal_walls(t_info_map *info);
+void			update_map_dimensions(char *line, int *width, int *height);
+void			count_collectibles_and_store_coordinates(t_info_map *info, int i);
+
 
 // Funciones de manejo del juego
 int				close_window(t_game *game);

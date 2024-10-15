@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    makefile                                           :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 13:07:22 by mcentell          #+#    #+#              #
-#    Updated: 2024/10/14 17:51:31 by mcentell         ###   ########.fr        #
+#    Updated: 2024/10/15 18:39:01 by mcentell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,18 +16,19 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror -I. -I$(LIBFT_DIR)/inc -I$(MLX_DIR)
 
-# Especificar los archivos fuente y los archivos objeto
-SRCS = re_so_long.c \
-       re_so_long_utils.c \
-       image_utils.c \
-       validate_map.c \
-       graphics.c \
-       init_game.c \
-       game.c \
-       player.c\
-	   flood_fill.c\
+SRCS = src/so_long.c \
+       src/so_long_utils.c \
+       src/image_utils.c \
+       src/validate_map.c \
+       src/graphics.c \
+       src/init_game.c \
+       src/game.c \
+       src/player.c \
+       src/flood_fill.c \
+	   read_map_utils.c\
 
-OBJS = $(SRCS:.c=.o)
+OBJ_DIR = obj
+OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
 
 LIBFT_DIR = libft
 MLX_DIR = minilibx-linux
@@ -39,6 +40,10 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
+
+$(OBJ_DIR)/%.o: src/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)

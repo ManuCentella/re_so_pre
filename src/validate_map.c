@@ -6,12 +6,11 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 21:22:45 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/14 18:01:30 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:05:04 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/inc/get_next_line.h"
-#include "re_so_long.h"
+#include "so_long.h"
 
 int	validate_map(t_info_map *info)
 {
@@ -34,7 +33,7 @@ int	validate_map(t_info_map *info)
 		return (EXIT_FAILURE);
 	if (!is_valid_path(info, info->player_x, info->player_y))
 	{
-		fprintf(stderr, "Error: No hay un camino válido\n");
+		ft_printf("Error: No hay un camino válido\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -49,7 +48,7 @@ int	is_rectangular(t_info_map *info)
 	{
 		if ((int)strlen(info->map[y]) != info->width)
 		{
-			fprintf(stderr, "Error: El mapa no es rectangular\n");
+			ft_printf("Error: El mapa no es rectangular\n");
 			return (EXIT_FAILURE);
 		}
 		y++;
@@ -61,7 +60,7 @@ int	is_surrounded_by_walls(t_info_map *info)
 {
 	if (!check_horizontal_walls(info) || !check_vertical_walls(info))
 	{
-		fprintf(stderr, "Error: El mapa no está cerrado/rodeado de muros\n");
+		ft_printf("Error: El mapa no está cerrado/rodeado de muros\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

@@ -6,19 +6,17 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 17:38:16 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/14 18:03:29 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:56:19 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "re_so_long.h"
+#include "so_long.h"
 
-// Función para verificar que las imágenes tengan el tamaño correcto
 void	verify_image_size(int width, int height)
 {
 	if (width != TILE_SIZE || height != TILE_SIZE)
 	{
-		fprintf(stderr,
-			"Error: Las imágenes deben tener el tamaño de TILE_SIZE\n");
+		ft_printf("Error: Las imágenes deben tener el tamaño de TILE_SIZE\n");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -53,18 +51,17 @@ int	has_valid_elements(int player_count, int exit_count, int collectible_count)
 {
 	if (player_count != 1)
 	{
-		fprintf(stderr, "Error: Solo puede haber una posicion\n");
+		ft_printf("Error: Solo puede haber una posicion\n");
 		return (EXIT_FAILURE);
 	}
 	if (exit_count != 1)
 	{
-		fprintf(stderr, "Error: El mapa debe tener una salida\n");
+		ft_printf("Error: El mapa debe tener una salida\n");
 		return (EXIT_FAILURE);
 	}
 	if (collectible_count < 1)
 	{
-		fprintf(stderr,
-			"Error: El mapa debe tener al menos un coleccionable\n");
+		ft_printf("Error: El mapa debe tener al menos un coleccionable\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

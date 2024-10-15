@@ -6,11 +6,13 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 17:52:39 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/14 17:59:53 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:39:10 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "re_so_long.h"
+#include "so_long.h"
+# include "libft/inc/ft_printf.h"
+
 
 void	*load_image(void *mlx, const char *file_path, int *width, int *height)
 {
@@ -19,7 +21,7 @@ void	*load_image(void *mlx, const char *file_path, int *width, int *height)
 	img = mlx_xpm_file_to_image(mlx, (char *)file_path, width, height);
 	if (!img)
 	{
-		fprintf(stderr, "Error al cargar %s\n", file_path);
+		ft_printf("Error al cargar %s\n", file_path);
 		exit(EXIT_FAILURE);
 	}
 	return (img);
@@ -90,7 +92,7 @@ int	process_tile(char tile, int *player_count, int *exit_count,
 		(*collectible_count)++;
 	else if (tile != '0' && tile != '1')
 	{
-		fprintf(stderr, "Error: Caracter inválido en el mapa: %c\n", tile);
+		ft_printf("Error: Caracter inválido en el mapa: %c\n", tile);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -105,7 +107,7 @@ void	put_image_to_window(t_game *game, void *img, int x, int y)
 	}
 	else
 	{
-		fprintf(stderr, "Error: Imagen nula en draw_tile\n");
+		ft_printf("Error: Imagen nula en draw_tile\n");
 		exit(EXIT_FAILURE);
 	}
 }

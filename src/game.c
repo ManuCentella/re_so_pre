@@ -6,11 +6,11 @@
 /*   By: mcentell <mcentell@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 20:31:07 by mcentell          #+#    #+#             */
-/*   Updated: 2024/10/14 16:32:27 by mcentell         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:06:13 by mcentell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "re_so_long.h"
+#include "so_long.h"
 
 int	close_window(t_game *game)
 {
@@ -37,7 +37,7 @@ int	handle_keypress(int keycode, t_game *game)
 	if (is_valid_move(new_x, new_y, game))
 		move_player(game, new_x, new_y);
 	else
-		printf("Movimiento fuera de los límites o en una pared\n");
+		ft_printf("Movimiento fuera de los límites o en una pared\n");
 	return (0);
 }
 
